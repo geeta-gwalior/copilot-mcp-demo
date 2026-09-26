@@ -20,7 +20,25 @@ A simple FastAPI application that serves a list of sample students from memory.
 uvicorn app:app --reload
 ```
 
-Then open http://127.0.0.1:8000/students to view the student data in JSON format.
+Then open http://127.0.0.1:8000/students to view the full student list in JSON format.
+
+## Endpoints
+
+### GET /students
+Returns all students.
+
+### GET /students/{id}
+Returns the student with the matching ID.
+
+Example:
+```bash
+curl http://127.0.0.1:8000/students/2
+```
+
+If no student matches the provided ID, the API returns HTTP 404 with a JSON error:
+```json
+{"detail": "Student not found"}
+```
 
 ## Run tests
 
