@@ -63,3 +63,25 @@ def test_delete_student_not_found():
     finally:
         students.clear()
         students.extend(original)
+
+
+def test_delete_removes_student_from_list():
+    # Ensure that after deleting a student, the student is no longer present in the list
+    from app import students
+
+    original = students.copy()
+
+    try:
+        # Ensure the student is present before deletion
+        assert any(s["id"] == 3 for s in students)
+
+        resp = client.delete("/students/3")
+        assert resp.status_code == 200
+        assert resp.json()["id"] == 3
+
+        get_resp = client.get("/students")
+        assert get_resp.status_code == 200
+        assert not any(s["id"] == 3 for s in get_resp.json())
+    finally:
+        students.clear()
+        students.extend(original)
