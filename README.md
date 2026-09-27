@@ -25,19 +25,39 @@ Then open http://127.0.0.1:8000/students to view the full student list in JSON f
 ## Endpoints
 
 ### GET /students
+
 Returns all students.
 
 ### GET /students/{id}
+
 Returns the student with the matching ID.
 
 Example:
+
 ```bash
 curl http://127.0.0.1:8000/students/2
 ```
 
 If no student matches the provided ID, the API returns HTTP 404 with a JSON error:
+
 ```json
-{"detail": "Student not found"}
+{ "detail": "Student not found" }
+```
+
+### DELETE /students/{id}
+
+Deletes the student with the matching ID and returns the deleted student as JSON.
+
+Example:
+
+```bash
+curl -X DELETE http://127.0.0.1:8000/students/2
+```
+
+If no student matches the provided ID, the API returns HTTP 404 with a JSON error:
+
+```json
+{ "detail": "Student not found" }
 ```
 
 ## Run tests
