@@ -21,3 +21,14 @@ def get_student(student_id: int):
             return student
 
     raise HTTPException(status_code=404, detail="Student not found")
+
+
+@app.delete("/students/{student_id}")
+def delete_student(student_id: int):
+    """Delete a student by ID. Returns the deleted student on success or 404 if not found."""
+    for idx, student in enumerate(students):
+        if student["id"] == student_id:
+            deleted = students.pop(idx)
+            return deleted
+
+    raise HTTPException(status_code=404, detail="Student not found")

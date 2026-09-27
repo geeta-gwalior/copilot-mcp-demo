@@ -28,3 +28,38 @@ def test_get_student_returns_404_when_not_found():
 
     assert response.status_code == 404
     assert response.json() == {"detail": "Student not found"}
+
+
+def test_delete_student_success():
+    # Backup original list and restore after test to avoid affecting other tests
+    from app import students
+
+    original = students.copy()
+
+    try:
+        response = client.delete("/students/2")
+        assert response.status_code == 200
+        assert response.json() == {"id": 2, "name": "Bob Smith", "age": 21, "grade": "B"}
+
+        # Ensure student is removed from the list
+        get_resp = client.get("/students")
+        assert get_resp.status_code == 200
+        assert {s["id"] for s in get_resp.json()} == {1, 3}
+    finally:
+        # Restore original students list
+        students.clear()
+        students.extend(original)
+
+
+def test_delete_student_not_found():
+    from app import students
+
+    original = students.copy()
+
+    try:
+        response = client.delete("/students/999")
+        assert response.status_code == 404
+        assert response.json() == {"detail": "Student not found"}
+    finally:
+        students.clear()
+        students.extend(original)
